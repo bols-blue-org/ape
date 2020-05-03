@@ -2,7 +2,7 @@ from setuptools import find_packages, setup
 
 setup(
     name='pid_envaluation',
-    version='0.0.2',
+    version='0.0.3',
     description='Ardupilot pid envaluation tool',
     long_description="",
     author='Hisayoshi Suehiro',
