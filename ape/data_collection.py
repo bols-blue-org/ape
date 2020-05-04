@@ -63,7 +63,8 @@ class AttDataCollection:
         self._i += 1
         return value
 
-if __name__ == '__main__':
+
+def console_scripts():
     json_open = open('../tests/log_0_2020-5-1-14-53-42.bin.json', 'r')
 
     data = AttDataCollection(json_open)
@@ -83,4 +84,8 @@ if __name__ == '__main__':
             print("インデックス：" + str(index) + ", 値：" + str(item))
         index += 1
 
+def main():
+    console_scripts()
 
+if __name__ == '__main__':
+    console_scripts()

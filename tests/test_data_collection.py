@@ -1,9 +1,9 @@
 import unittest
 
-from pid_evaluation.data_collection import AttDataCollection
+from ape.data_collection import AttDataCollection
 
 
-class MyTestCase(unittest.TestCase):
+class DataCollectionTestCase(unittest.TestCase):
     def test_loadjson(self):
         json_open = open('../tests/log_0_2020-5-1-14-53-42.bin.json', 'r')
         data = AttDataCollection(json_open)

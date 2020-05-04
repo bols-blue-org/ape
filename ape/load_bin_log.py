@@ -3,7 +3,7 @@ from datetime import datetime
 
 from pymavlink import mavutil
 
-from pid_evaluation.data_collection import AttDataCollection
+from ape.data_collection import AttDataCollection
 
 
 class LoadBinLog(AttDataCollection):
