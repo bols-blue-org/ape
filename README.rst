@@ -16,4 +16,8 @@
 
    eval "$(register-python-argcomplete ape-pid-envaluation)"
 
+使い方
 
+::
+
+    ape--pid-envaluation ログファイル
