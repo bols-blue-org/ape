@@ -1,10 +1,14 @@
 import json
+from copy import copy
+from datetime import datetime
+from typing import Union, List, Dict
 
-class AttDataCollection:
+
+class DataCollection:
     data =[]
     init_alt = 0
 
-    def __init__(self, file, init_alt=None):
+    def __init__(self, file: Union[List, str], init_alt=None):
         self._i = 0
         if type(file) is list:
             self.data = file
@@ -24,14 +28,14 @@ class AttDataCollection:
         for item in self.data:
             if item["meta"]["type"] == type_name:
                 new_data.append(item)
-        return AttDataCollection(new_data,init_alt=self.init_alt)
+        return DataCollection(new_data, init_alt=self.init_alt)
 
     def dropWithType(self, type_name):
         new_data = []
         for item in self.data:
             if item["meta"]["type"] != type_name:
                 new_data.append(item)
-        return AttDataCollection(new_data,init_alt=self.init_alt)
+        return DataCollection(new_data, init_alt=self.init_alt)
 
     def dropWithAlt(self, alt_diff):
         drop_flg = False
@@ -44,7 +48,7 @@ class AttDataCollection:
                     drop_flg = False
             if drop_flg:
                 new_data.append(item)
-        return AttDataCollection(new_data,init_alt=self.init_alt)
+        return DataCollection(new_data, init_alt=self.init_alt)
 
     def __len__(self):
         return len(self.data)
@@ -56,36 +60,14 @@ class AttDataCollection:
         self._i = 0
         return self
 
-    def __next__(self):
+    def __next__(self) -> Dict[str, Dict[str,Union[str,float,datetime]]]:
         if self._i == len(self.data):
             raise StopIteration()
         value = self.data[self._i]
         self._i += 1
         return value
 
-
-def console_scripts():
-    json_open = open('../tests/log_0_2020-5-1-14-53-42.bin.json', 'r')
-
-    data = AttDataCollection(json_open)
-    data = data.dropWithType("RCIN")
-    data = data.dropWithType("RCOU")
-    index = 0
-    print_flg = False
-    data = data.dropWithAlt(1)
-    for item in data:
-        if item["meta"]["type"] == "CTUN":
-            if item["data"]["Alt"] > 2:
-                print_flg = True
-            else:
-                print_flg = False
-
-        if print_flg:
-            print("インデックス：" + str(index) + ", 値：" + str(item))
-        index += 1
-
-def main():
-    console_scripts()
-
-if __name__ == '__main__':
-    console_scripts()
+    def __reversed__(self):
+        tmp = copy(self.data)
+        tmp.reverse()
+        return DataCollection(tmp, init_alt=self.init_alt)

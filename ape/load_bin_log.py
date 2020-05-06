@@ -1,17 +1,17 @@
 import array
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 
 from pymavlink import mavutil
 
-from ape.data_collection import AttDataCollection
+from ape.data_collection import DataCollection
 
 
-class LoadBinLog(AttDataCollection):
-    def __init__(self, filename):
+class LoadBinLog(DataCollection):
+    def __init__(self, filename, data_type=None):
         self.list = []
         mlog = mavutil.mavlink_connection(filename)
-        while True :
-            m = mlog.recv_match()
+        while True:
+            m = mlog.recv_match(type=data_type)
             timestamp = getattr(m, '_timestamp', 0.0)
             if m is None:
                 break
@@ -25,7 +25,8 @@ class LoadBinLog(AttDataCollection):
                 continue
             if m.get_type() == "UNIT":
                 continue
-            meta = {"type": m.get_type(), "timestamp": datetime.fromtimestamp(timestamp).isoformat()}
+            jst = timezone(timedelta(hours=+9), 'JST')
+            meta = {"type": m.get_type(), "timestamp": datetime.fromtimestamp(timestamp, tz=jst)}
             # meta["srcSystem"] = m.get_srcSystem()
             # meta["srcComponent"] = m.get_srcComponent()
 
