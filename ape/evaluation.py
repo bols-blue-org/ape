@@ -27,7 +27,7 @@ def evaluation(log_file):
             if first is None:
                 first = item
 
-        print("インデックス：" + str(index) + ", 値：" + str(item))
+        # print("インデックス：" + str(index) + ", 値：" + str(item))
         index += 1
 
     dt1 = first["meta"]["timestamp"]
