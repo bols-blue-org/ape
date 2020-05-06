@@ -5,8 +5,9 @@ import argcomplete, argparse
 import ape
 from ape.load_bin_log import LoadBinLog
 
+
 def evaluation(log_file):
-    data = LoadBinLog(log_file,["CTUN","ATT"])
+    data = LoadBinLog(log_file, ["CTUN", "ATT"])
     index = 0
     print_flg = False
     data = data.dropWithAlt(1)
@@ -32,28 +33,24 @@ def evaluation(log_file):
     dt1 = first["meta"]["timestamp"]
     dt2 = last["meta"]["timestamp"]
 
-    print("start="+str(dt1)+" end="+str(dt2))
+    print("start=" + str(dt1) + " end=" + str(dt2))
     td = dt2 - dt1
     ave = result / td.seconds
-    print("result average="+str(ave)+" flight time:"+str(td)+ "result total:" +str(result))
+    print("result average=" + str(ave) + " flight time:" + str(td) + "result total:" + str(result))
 
 
 def main():
     # Initiate the parser
     parser = argparse.ArgumentParser()
     parser.add_argument("log", type=str, help="log file")
-    parser.add_argument("-V", "--version", help="show program version", action="store_true")
+    parser.add_argument("-V", "--version", action='version',
+                        version=ape.__version__, help="show program version")
     argcomplete.autocomplete(parser)
     args = parser.parse_args()
     # Read arguments from the command line
     args = parser.parse_args()
 
-    # Check for --version or -V
-    if args.version:
-        print("Version "+str(ape.__init__))
-        exit(0)
-
-    if args.log == None:
+    if args.log is None:
         print("must logfile name")
         exit(-1)
     evaluation(args.log)
@@ -61,4 +58,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
