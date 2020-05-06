@@ -34,8 +34,8 @@ def evaluation(log_file):
 
     print("start="+str(dt1)+" end="+str(dt2))
     td = dt2 - dt1
-
-    print("result="+str(result)+" flight time:"+str(td))
+    ave = result / td.seconds
+    print("result average="+str(ave)+" flight time:"+str(td)+ "result total:" +str(result))
 
 
 def main():
