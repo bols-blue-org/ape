@@ -39,8 +39,8 @@ class LoadBinLog(DataCollection):
             for key in data.keys():
                 if type(data[key]) == array.array:
                     data[key] = list(data[key])
-            outMsg = {"meta": meta, "data": data}
+            out_msg = {"meta": meta, "data": data}
 
-            self.list.append(outMsg)
+            self.list.append(out_msg)
         super().__init__(self.list)
 

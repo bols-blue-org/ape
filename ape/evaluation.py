@@ -1,17 +1,20 @@
 #!/usr/bin/env python
 # Include standard modules
-import argcomplete, argparse
+from datetime import datetime
+
+import argcomplete
+import argparse
 
 import ape
 from ape.load_bin_log import LoadBinLog
 
-
 def evaluation(log_file):
     data = LoadBinLog(log_file, ["CTUN", "ATT"])
     index = 0
-    print_flg = False
     data = data.dropWithAlt(1)
-    result = 0
+    roll_result = 0
+    pitch_result = 0
+    yaw_result = 0
     rev = reversed(data)
     first = None
     last = None
@@ -23,20 +26,27 @@ def evaluation(log_file):
     for item in data:
         if item["meta"]["type"] == "ATT":
             tmp = item["data"]
-            result += abs(tmp["DesRoll"] - tmp["Roll"])
+            roll_result += abs(tmp["DesRoll"] - tmp["Roll"])
+            pitch_result += abs(tmp["DesPitch"] - tmp["Pitch"])
+            yaw_result += abs(tmp["DesYaw"] - tmp["Yaw"])
             if first is None:
                 first = item
 
         # print("インデックス：" + str(index) + ", 値：" + str(item))
         index += 1
 
-    dt1 = first["meta"]["timestamp"]
+    dt1 :datetime= first["meta"]["timestamp"]
     dt2 = last["meta"]["timestamp"]
 
     print("start=" + str(dt1) + " end=" + str(dt2))
     td = dt2 - dt1
-    ave = result / td.seconds
-    print("result average=" + str(ave) + " flight time:" + str(td) + "result total:" + str(result))
+    print("flight time:" + str(td))
+    ave = roll_result / td.seconds
+    print("roll result average=" + str(ave) + " roll result total:" + str(roll_result))
+    ave = pitch_result / td.seconds
+    print("pitch result average=" + str(ave) + " roll result total:" + str(pitch_result))
+    ave = yaw_result / td.seconds
+    print("yaw result average=" + str(ave) + " roll result total:" + str(yaw_result))
 
 
 def main():
@@ -46,7 +56,6 @@ def main():
     parser.add_argument("-V", "--version", action='version',
                         version=ape.__version__, help="show program version")
     argcomplete.autocomplete(parser)
-    args = parser.parse_args()
     # Read arguments from the command line
     args = parser.parse_args()
 

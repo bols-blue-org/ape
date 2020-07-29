@@ -16,6 +16,13 @@ class LoadBinTestCase(unittest.TestCase):
         data = LoadBinLog("../tests/log_0_2020-5-1-14-53-42.bin", ["RCOU", "ATT"])
         self.assertEqual(len(data), 1644, "no data")
 
+    def test_SepalteRCIN6Para(self):
+        data = LoadBinLog("../tests/log_13_2020-5-13-15-45-02.bin", ["RCOU", "ATT", "RCIN"])
+        dict = data.seplateRCIN6Param()
+        for item in dict:
+            print("data"+item)
+
+        self.assertEqual(len(data), 1644, "no data")
 
 if __name__ == '__main__':
     unittest.main()
